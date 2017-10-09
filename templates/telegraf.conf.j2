@@ -1,5 +1,13 @@
 # Telegraf configuration
 
+[global_tags]
+{% if telegraf_agent_global_tags is defined and telegraf_agent_global_tags is iterable %}
+{% for item in telegraf_agent_global_tags %}
+    {{ item.global_tag_name }} = "{{ item.global_tag_value }}"
+{% endfor %}
+{% endif %}
+
+
 [tags]
 {% if telegraf_agent_tags is defined and telegraf_agent_tags is iterable %}
 {% for item in telegraf_agent_tags %}

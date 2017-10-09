@@ -1,14 +1,18 @@
 ---
 # tasks file for ansible-telegraf
+- name: "Install the correct repository"
+  include: "Debian.yml"
+  when: ansible_os_family == "Debian"
 
 - name: "Install the correct repository"
   include: "RedHat.yml"
   when: ansible_os_family == "RedHat"
 
-- name: "Install the correct repository"
-  include: "Debian.yml"
-  when: ansible_os_family == "Debian"
-
+- name: "Add telegraf to the puppet group to read the reports/summary"
+  user: name=telegraf
+        groups=puppet
+        append=yes
+  
 - name: "Copy the template for versions < 0.10.0"
   template:
     src: etc-opt-telegraf-telegraf.conf.j2
